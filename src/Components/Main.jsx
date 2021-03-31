@@ -78,9 +78,17 @@ export default function Main() {
 
     return (
         <>
-            {check? <EditForm oject={change} editItemNote={editItemNote}/> : <CreateForm addItemNote={addItemNote}/>}
-            <List array={state} changeItem={changeItemNote} deleteItem={deleteItemNote}/>
-            <button onClick={deleteAllNotes}>Delete All Notes</button>
+            <div className="container d-flex">
+                <div className="col-8">
+                    {check? <EditForm oject={change} editItemNote={editItemNote}/> : <CreateForm addItemNote={addItemNote}/>}
+                </div>
+                <div className="col-4">
+                    <div>
+                        <button className="btn btn-success btn-del-note" onClick={deleteAllNotes}>Delete All Notes</button>
+                    </div>
+                    <List array={state} changeItem={changeItemNote} deleteItem={deleteItemNote}/>
+                </div>
+            </div>
         </>
     )
 }
