@@ -8,7 +8,7 @@ export default function List(props) {
                         <li>title: {item['title']}</li>
                         <li>text: {item['text']}</li>
                         <li>date: {item['date']}</li>
-                        <li>dateEdd: {item['dateEdd']===''? 'not change': item['dateEdd']}</li>
+                        <li>dateEdd: {item['edd']? item['dateEdd'] : 'not change'}</li>
                         <li>
                             <button onClick={props.changeItem}  index={index}> Change </button>
                         </li>

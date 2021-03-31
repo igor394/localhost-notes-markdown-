@@ -1,10 +1,13 @@
 import List from "./List";
 import {useState} from 'react';
+import CreateForm from "./CreateForm";
+import EdditForm from "./EdditForm";
 
 
 export default function Main() {
     const key = 'keyNote';
-    const setItemJson =(key, arr) => localStorage.setItem(key, JSON.stringify(arr));
+    const setItemJson = (keys, arr) => localStorage.setItem(keys, JSON.stringify(arr));
+    const getItemJson = keys => JSON.parse(localStorage.getItem(keys));
     const [state, setState] = useState(JSON.parse(localStorage.getItem(key)) || [])
 
     const createItemNote = (event) => {
@@ -15,32 +18,31 @@ export default function Main() {
             "title": title,
             "text": text,
             "date": new Date().toLocaleString(),
+            "edd": false,
             "dateEdd": ''
         };
         if(!localStorage.getItem(key)){
             console.log([object])
             setItemJson(key, [object]);
-            setState( JSON.parse(localStorage.getItem(key)));
+            setState( getItemJson(key));
         } else {
-            let accum = JSON.parse(localStorage.getItem(key));
+            let accum = getItemJson(key);
             accum.push(object);
             setItemJson(key, accum);
-            setState( JSON.parse(localStorage.getItem(key)));
+            setState( getItemJson(key));
         }
     }
-    const  deleteItem = (event) =>{
+    const  deleteItemNote = (event) =>{
         let index = event.target.index;
-        let arr = JSON.parse(localStorage.getItem(key));
+        let arr = getItemJson(key);
         arr.splice(index, 1);
         setItemJson(key, arr);
-        setState(JSON.parse(localStorage.getItem(key)));
+        setState(getItemJson(key));
 
     }
-    const  changeItem = (event) =>{
-        // console.log(event.target.name);
-        // let index = event.target.name;
-        // let arr = JSON.parse(localStorage.getItem(key));
-        // console.log(arr, index);
+    const  changeItemNote = (event) =>{
+        event.preventDefault();
+        console.log(event);
 
     }
     const deleteAllNotes=()=>{
@@ -50,13 +52,11 @@ export default function Main() {
     console.log(state)
     return (
         <>
-            <form action="" onSubmit={createItemNote}>
-                <input type="text" name="title" placeholder="Enter note name"/>
-                <input type="text" name="text" placeholder="Enter note text"/>
-                <button type="submit">Enter</button>
-            </form>
-            <List array={state} changeItem={changeItem} deleteItem={deleteItem}/>
-            <button onClick={deleteAllNotes}>Enter</button>
+             {/*if edd? EdditForm : CreateForm*/}
+           <CreateForm createItemNote={createItemNote}/>
+           <EdditForm changeItemNote={changeItemNote}/>
+            <List array={state} changeItem={changeItemNote} deleteItem={deleteItemNote}/>
+            <button onClick={deleteAllNotes}>Delete All Notes</button>
         </>
     )
 }
