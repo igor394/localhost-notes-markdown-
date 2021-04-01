@@ -1,4 +1,4 @@
-// import ReactMarkdown from 'react-markdown';
+
 export default function CreateForm(props) {
     return (
         <>
@@ -11,10 +11,8 @@ export default function CreateForm(props) {
                     <div className="col-12 mb-3">
                         <textarea className="form-control" name="text" id="exampleFormControlTextarea1" rows="15"  placeholder="Enter note text"></textarea>
                     </div>
-
                 </form>
             </div>
-
         </>
     )
 }

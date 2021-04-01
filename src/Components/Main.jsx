@@ -2,6 +2,8 @@ import List from "./List";
 import {useState} from 'react';
 import CreateForm from "./CreateForm";
 import EditForm from "./EditForm";
+import View from "./ViewModal";
+
 
 export default function Main() {
     const key = 'keyNote';
@@ -9,6 +11,8 @@ export default function Main() {
     const getItemJson = keys => JSON.parse(localStorage.getItem(keys));
     const [state, setState] = useState(getItemJson(key) || []);
     const [check, setCheck] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [textView, setTextView] = useState('')
     const initialEditNote = {
         title: '',
         text: '',
@@ -28,6 +32,7 @@ export default function Main() {
         event.preventDefault();
         let title = event.target.elements.title.value;
         let text = event.target.elements.text.value;
+
         let object = createItem(title, text);
 
         if(!localStorage.getItem(key)){
@@ -75,6 +80,16 @@ export default function Main() {
         localStorage.removeItem(key);
         setState([])
     };
+    const previewNote =(event)=>{
+        let index = event.target.value
+        let noteText = getItemJson(key)[index]['text'];
+        console.log(noteText);
+        setModal(true);
+        setTextView(noteText);
+    }
+    const  closeModal =(event)=>{
+        setModal(false);
+    }
 
     return (
         <>
@@ -86,9 +101,10 @@ export default function Main() {
                     <div>
                         <button className="btn btn-success btn-del-note" onClick={deleteAllNotes}>Delete All Notes</button>
                     </div>
-                    <List array={state} changeItem={changeItemNote} deleteItem={deleteItemNote}/>
+                    <List array={state} changeItem={changeItemNote} deleteItem={deleteItemNote} previewNote={previewNote}/>
                 </div>
             </div>
+            <View text={textView} check={modal} closeModal={closeModal}/>
         </>
     )
 }
